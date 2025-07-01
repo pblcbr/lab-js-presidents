@@ -442,11 +442,13 @@ const getDemocraticPresidents2 = presidentsArr => presidentsArr.filter(president
 // Iteration 3 | Count Years in Office - reduce()
 function  countYearsInOffice(presidentsArr) {
   const yearsInOffice = presidentsArr.reduce((total, president) => {
-    return yearsInOffice = total + president.leftOffice - president.tookOffice
+    if(!president.leftOffice) return total;
+    return total + president.leftOffice - president.tookOffice
   },0);
+  console.log(yearsInOffice)
+  return yearsInOffice
   }
 
-  console.log(countYearsInOffice(presidents))
 
 
 
@@ -470,26 +472,57 @@ function sortPresidentsByBirthYear(presidentsArr) {
 // Bonus: Iteration 5 | Age at Inauguration - `map()`
 function getAgeAtInauguration(presidentsArr) {
   const newListPresidents = presidentsArr.map(president => {
-    
-  })
-  
-}
+    const birthYear = president.birthYear;
+    const inaugurationYear = president.tookOfficeYear;
+    const ageAtInauguration = inaugurationYear - birthYear;
+    return {
+      ...president,
+      ageAtInauguration: ageAtInauguration 
+        };
+      });
+      
+      return newListPresidents;
+    }
 
 
 
 
 // Bonus: Iteration 6 | Presidents Born After - `filter()`
-function getPresidentsBornAfter(presidentsArr, year) {}
-
+function getPresidentsBornAfter(presidentsArr, year) {
+  const filteredPresidents = presidentsArr.filter(president => president.birthYear > year);
+  return filteredPresidents;
+}
 
 
 
 // Bonus: Iteration 7 | Count Republican Presidents
-function countRepublicanPresidents(presidentsArr) {}
+function countRepublicanPresidents(presidentsArr) {
+  const republicans = presidentsArr.reduce((total, president) => {
+    if(president.party === 'Republican') {
+      return total + 1
+    } else {
+      return total + 0
+    }
+  }, 0)
+  return republicans
+}
 
 
+console.log(countRepublicanPresidents(presidents))
 
 
-// Bonus: Iteration 8 | Sort Presidents by Name - `sort()`
-function sortPresidentsByName(presidentsArr) {}
+function sortPresidentsByName(presidentsArr) {
+  presidentsArr.sort((a, b) => {
+    const nameA = a.name.toUpperCase();
+    const nameB = b.name.toUpperCase();
+    if (nameA < nameB) {
+      return -1;
+    }
+    if (nameA > nameB) {
+      return 1;
+    }
+    return 0;
+  });
 
+  return sortedPresidents;
+}
